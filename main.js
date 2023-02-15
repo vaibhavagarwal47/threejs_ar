@@ -220,10 +220,20 @@ function init() {
   );
 
   const defaultLight = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
-  defaultLight.position.set(0.5, 1, 0.25);
+  defaultLight.position.set(0, 1, 0);
   scene.add(defaultLight);
+const light = new THREE.DirectionalLight(0xffffff);
+light.position.set(0, 0, 0);
+scene.add(light);
 
-  //
+// create light (it is needed for viewing the shapes)
+const light2 = new THREE.AmbientLight(0xffffff, 1, 1000);
+light2.position.set(0, 0, 0);
+scene.add(light2);
+
+const light1 = new THREE.DirectionalLight(0xffffff, 1, 1000);
+light1.position.set(10, 10, 0);
+scene.add(light1);
 
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -276,9 +286,9 @@ loader.load(
   // called when the resource is loaded
   function (gltf) {
     console.log(gltf.scene);
-    gltf.scene.scale.set(1, 1, 1);
+    gltf.scene.scale.set(2, 2, 2);
     gltf.scene.position.x = 0; //Position (x = right+ left-)
-    gltf.scene.position.y = -500; //Position (y = up+, down-)
+    gltf.scene.position.y = 0; //Position (y = up+, down-)
     gltf.scene.position.z = 0;
     scene.add(gltf.scene);
   },
@@ -293,8 +303,8 @@ loader.load(
 );
 
   function onSelect() {
-    ballGroup.position.set(0, 0, -2).applyMatrix4(controller.matrixWorld);
-    ballGroup.quaternion.setFromRotationMatrix(controller.matrixWorld);
+    loader.position.set(0, 0, -2).applyMatrix4(controller.matrixWorld);
+    loader.quaternion.setFromRotationMatrix(controller.matrixWorld);
   }
 
   controller = renderer.xr.getController(0);
